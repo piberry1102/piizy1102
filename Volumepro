@@ -1,0 +1,39 @@
+//@version=5
+################################################################################
+#                                                                              #
+#                   CODE BY DANG KHOA - ZALO PI BERRY                          #
+#                                                                              #
+################################################################################
+
+indicator("Volume Pro - Encoded", overlay=false, precision=0, format=format.volume, max_labels_count=500)
+_l1 = ta.sma(volume, 5)
+_l2 = ta.sma(volume, 10)
+_l3 = ta.sma(volume, 20)
+_r = (volume / _l3) * 100
+_sd = ta.stdev(volume, 10)
+_t = volume < _l3 * 0.8 and _sd < ta.sma(_sd, 10)
+_st = _r >= 150 ? "NỔ VOL (BÙNG NỔ)" : _t ? "SIẾT VOL (CẠN KIỆT)" : _r >= 90 ? "TÍCH LŨY (ỔN ĐỊNH)" : "BÌNH THƯỜNG"
+_cl = _r >= 150 ? color.rgb(200, 0, 0) : _t ? color.rgb(0, 100, 200) : _r >= 90 ? color.rgb(34, 177, 76) : color.gray
+_vc = close > open ? #22b14c : #ed1c24
+plot(volume, title="V", color=_vc, style=plot.style_columns)
+plot(_l1, title="L1", color=color.blue, linewidth=1)
+plot(_l2, title="L2", color=color.orange, linewidth=1)
+_tt = "📊 CHI TIẾT KHỐI LƯỢNG\n------------------------\nKhối lượng: " + str.tostring(volume, "#,###") + "\nTrung bình 5:  " + str.tostring(_l1, "#,###") + "\nTrung bình 10: " + str.tostring(_l2, "#,###") + "\nTrạng thái: " + _st
+label.new(bar_index, volume, text="●", tooltip=_tt, style=label.style_none, textcolor=color.new(color.gray, 50), size=size.small)
+var table _tb = table.new(position.bottom_left, 2, 7, bgcolor=color.white, border_color=#0078d7, border_width=1)
+if barstate.islast
+    table.merge_cells(_tb, 0, 0, 1, 0)
+    table.cell(_tb, 0, 0, "PHÂN TÍCH KHỐI LƯỢNG", bgcolor=#0078d7, text_color=color.white)
+    _lc = close > open ? #008000 : color.red
+    table.cell(_tb, 0, 1, "Volume hiện tại:", text_halign=text.align_left, text_color=color.black)
+    table.cell(_tb, 1, 1, str.tostring(volume, "#,###"), text_halign=text.align_right, text_color=_lc)
+    table.cell(_tb, 0, 2, "TB 5 phiên:", text_halign=text.align_left, text_color=color.gray)
+    table.cell(_tb, 1, 2, str.tostring(_l1, "#,###"), text_halign=text.align_right, text_color=color.gray)
+    table.cell(_tb, 0, 3, "TB 10 phiên:", text_halign=text.align_left, text_color=color.gray)
+    table.cell(_tb, 1, 3, str.tostring(_l2, "#,###"), text_halign=text.align_right, text_color=color.gray)
+    table.cell(_tb, 0, 4, "TB 20 phiên:", text_halign=text.align_left, text_color=color.gray)
+    table.cell(_tb, 1, 4, str.tostring(_l3, "#,###"), text_halign=text.align_right, text_color=color.gray)
+    table.merge_cells(_tb, 0, 5, 1, 5)
+    table.cell(_tb, 0, 5, "----------------------------------", text_color=color.silver)
+    table.cell(_tb, 0, 6, "Trạng thái:", text_halign=text.align_left, text_color=color.black)
+    table.cell(_tb, 1, 6, _st, text_halign=text.align_right, text_color=_cl)
