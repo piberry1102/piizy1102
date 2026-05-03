@@ -53,11 +53,11 @@ if longSignal
     tp1 := entryP + dist * 1.5, tp2 := entryP + dist * 2.5, tp3 := entryP + dist * 4.0
     entryDate := str.format("{0,date,dd/MM} {0,time,HH:mm}", time)
     
-    // Xóa đường cũ để vẽ đường mới
+    
     line.delete(l_e), line.delete(l_s), line.delete(l_t1), line.delete(l_t2), line.delete(l_t3)
     label.delete(lb_e), label.delete(lb_s), label.delete(lb_t1), label.delete(lb_t2), label.delete(lb_t3)
 
-    // Vẽ các đường mới
+   
     l_e := line.new(bar_index, entryP, bar_index + 25, entryP, color=color.gray, width=2)
     lb_e := label.new(bar_index + 27, entryP, "ENTRY " + str.tostring(entryP, "#.#"), color=color.gray, textcolor=color.white, style=label.style_label_left)
     l_s := line.new(bar_index, slP, bar_index + 25, slP, color=dnColor, width=2)
