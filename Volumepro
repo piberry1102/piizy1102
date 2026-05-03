@@ -1,10 +1,4 @@
 //@version=5
-################################################################################
-#                                                                              #
-#                   CODE BY DANG KHOA - ZALO PI BERRY                          #
-#                                                                              #
-################################################################################
-
 indicator("Volume Pro - Encoded", overlay=false, precision=0, format=format.volume, max_labels_count=500)
 _l1 = ta.sma(volume, 5)
 _l2 = ta.sma(volume, 10)
